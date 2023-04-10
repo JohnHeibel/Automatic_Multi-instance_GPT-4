@@ -3,6 +3,7 @@ import openai
 import tiktoken
 import time
 import Keys
+import multiprocessing
 from googleapiclient.discovery import build
 from bs4 import BeautifulSoup
 import requests
@@ -73,23 +74,27 @@ class SearchBot:
         res = service.cse().list(q=search_term, cx=cse_id, **kwargs).execute()
         return res['items']
 
-    def search_pipeline(self) -> str:
-        results = self.google_search(self.input, my_api_key, my_cse_id, num=3)
-        website_summaries = []
-        summary_string = ""
-        for result in results:
-            page = requests.get(result['link'])
+    def _search_crop_process(self, link: dict) -> str:
+        try:
+            page = requests.get(link['link'])
             soup = BeautifulSoup(page.content, "html.parser")
             raw_text = soup.get_text().replace("\n", "")
             cropped = enc.decode(enc.encode(raw_text)[:4000])
-            print(len(cropped))
-            search_test = GPT(
-                "You are summarizeGPT. You will be given the raw text extracted from a website. You must create a summary of the core content on the page in a full and complete form. Results with no content or error messages should be ignored. Emphasize facts and statistics from the page.",
-                model="gpt-3.5-turbo")
-            summary = search_test.create_chat_completion(cropped)
-            logging.debug(summary)
-            website_summaries.append(summary)
-            search_test.memory_wipe()
+        except:
+            cropped = "The search has encountered an error, no page will be returned."
+        print(len(cropped))
+        search_test = GPT(
+            "You are summarizeGPT. You will be given the raw text extracted from a website. You must create a summary of the core content on the page in a full and complete form. Results with no content or error messages should be ignored. Emphasize facts and statistics from the page.",
+            model="gpt-3.5-turbo")
+        summary = search_test.create_chat_completion(cropped)
+        logging.debug(summary)
+        return summary
+
+    def search_pipeline(self) -> str:
+        results = self.google_search(self.input, my_api_key, my_cse_id, num=3)
+        summary_string = ""
+        pool = multiprocessing.Pool(processes=3)
+        website_summaries = pool.map(self._search_crop_process, results)
         for i in website_summaries:
             summary_string += (i+"\n")
 
