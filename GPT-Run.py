@@ -1,12 +1,9 @@
 import GPT_Pipeline
 
 def main():
-    file = open(r"C:\Users\jhcat\OneDrive\Documents\College\Automatic Multi-Instance GPT-4\GPT_Pipeline.py", "r")
-    data = file.read()
-    file.close()
-    mainq = f"""Given a snippet of code, write a README file describing it. The code is: {data}"""
+    main_question = input("What is your question?")
 
-    pipeline = GPT_Pipeline.SemiRecursivePipeline(mainq)
+    pipeline = GPT_Pipeline.SemiRecursivePipeline(main_question)
 
     print(pipeline.process())
 
