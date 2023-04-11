@@ -1,7 +1,8 @@
 import json
-import GPT_API
+import Bot_Modules
 import logging
 import multiprocessing
+
 
 logging.basicConfig()
 log = logging.getLogger(__name__)
@@ -19,19 +20,19 @@ class DelegatorParser:
 
     def _child_parser(self, id: str, name: str, task: str, tool: str):
         if tool.lower() == "search":
-            return GPT_API.GPTChild_Search(id,
+            return Bot_Modules.GPTChild_Search(id,
                                            name,
                                            task,
                                            self.main_question,
                                            self.child_model)
         if tool.lower() == "calculator":
-            return GPT_API.GPTChild_Search(id,
+            return Bot_Modules.GPTChild_Search(id,
                                     name,
                                     task,
                                     self.main_question,
                                     self.child_model)
         else:
-            return GPT_API.GPTChild(id,
+            return Bot_Modules.GPTChild(id,
                                     name,
                                     task,
                                     self.main_question,
@@ -66,8 +67,10 @@ class DelegatorParser:
         self._gen_children()
         self._gen_messages()
         child_out = ""
+        f = open("child_log.txt", "w")
         for i in self.generations:
+            f.write(i)
             child_out += (i+"\n")
-
+        f.close()
         return child_out
 
