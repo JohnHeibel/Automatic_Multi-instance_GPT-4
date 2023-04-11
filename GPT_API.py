@@ -218,29 +218,3 @@ class Solver(GPT):
     def __init__(self, main_question, Model="gpt-4"):
         SOLVERPROMPT = f"You are SolverGPT. Your task is to approach a problem and break it down into separate and discrete questions that will be passed down to subAI instances. The problem you are tyring to break down into discrete steps to try and find the information needed to answer is: {main_question}"
         super().__init__(SOLVERPROMPT, Model)
-
-
-# class SemiRecursivePipeline:
-#     def __init__(self, main_question, main_model="gpt-4", child_model="gpt-3.5-turbo"):
-#         self.main_question = main_question
-#         self.main_model = main_model
-#         self.child_model = child_model
-#
-#     def process(self) -> str:
-#         solver = Solver(self.main_question)
-#
-#         task_list = solver.create_chat_completion(self.main_question)
-#
-#         delegator = Delegator()
-#
-#         delegate_json = delegator.create_chat_completion(task_list)
-#
-#         delegator_parse = delegator_parser.DelegatorParser(delegate_json, self.main_question, self.main_model, self.child_model)
-#
-#         # child_out = delegator_parse.Delegate_Child_Pathway()
-#         #
-#         # combinator = Combinator(self.main_question)
-#         #
-#         # final_answer = combinator.create_chat_completion(f"{child_out} \n\n\n Using the information given from the subAI instances, fully answer this question: {self.main_question}")
-#
-#         # return final_answer
