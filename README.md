@@ -23,8 +23,9 @@ from GPT_API import Solver, Delegator, Combinator
 import delegator_parser
 
 def main():
+  question = input("What is your question?\n")
   # Create an instance of SemiRecursivePipeline
-  pipeline = SemiRecursivePipeline(main_question="What is the capital of France?")
+  pipeline = SemiRecursivePipeline(main_question=question)
 
   # Get the answer to the question using the process method
   answer = pipeline.process()
