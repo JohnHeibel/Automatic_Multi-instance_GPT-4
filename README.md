@@ -7,8 +7,6 @@ Automatic Multi-Instance GPT is designed to provide an interface for utilizing m
 
 ## Usage
 
-To use the SemiRecursivePipeline class, follow these steps:
-
 1. Create file Keys.py
 2. Add key values of the form
 ```python
