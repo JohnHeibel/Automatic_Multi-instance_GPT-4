@@ -19,8 +19,7 @@ OPEN_AI_KEY = "[OPEN_AI_KEY]"
 ### Example Usage
 
 ```python
-from GPT_API import Solver, Delegator, Combinator
-import delegator_parser
+import GPT_Pipeline
 
 def main():
   question = input("What is your question?\n")
