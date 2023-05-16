@@ -2,53 +2,48 @@
 
 ## Overview
 
-Automatic Multi-Instance GPT is designed to provide an interface for utilizing multiple GPT-based AI models for iteratively answering a given question. Specifically, it combines the input from the main model (default: GPT-4) and a child model (default: GPT-3.5-turbo) for solving complex AI problems.
+Automatic Multi-Instance GPT is designed to provide an interface for utilizing multiple GPT-based AI models for iteratively answering a given question. It calls a main GPT instance that creates a list of related questions. This is then processed aby another GPT instance to convert it to JSON. This file is parsed to delegate a variable number of child instances. Each child instance can be assigned a tool to use. Current only internal knoledge and search is implemented. Search is a simple implementation that gets the top 3 search results and uses GPT to summarize the page. These summaries are passed to the child instance. After each child has processed, the results are passed into a single final summariszer GPT instance that tries to answer the main question. 
 
-The main components of this code snippet are:
-
-1. GPT_API
-2. delegator_parser
-3. SemiRecursivePipeline class
-
-The module imports GPT_API and delegator_parser, which are used in the SemiRecursivePipeline class to generate, delegate, parse, and combine tasks for multiple subAI instances.
-
-## SemiRecursivePipeline Class
-
-The SemiRecursivePipeline class is initialized with three parameters:
-
-1. main_question (string): The main question to be answered by the pipeline.
-2. main_model (string, optional): The primary GPT model to be used (default: "gpt-4").
-3. child_model (string, optional): The secondary GPT model to be used (default: "gpt-3.5-turbo").
-
-The class has only one method:
-
-1. process(): This method generates a list of subtasks, delegates them to the main and child models, combines their respective outputs, and returns the final answer as a string.
 
 ## Usage
 
 To use the SemiRecursivePipeline class, follow these steps:
 
-1. Import the necessary classes.
-2. Instantiate the SemiRecursivePipeline object with your main_question and your choice of main_model and child_model, if you wish to use different models.
-3. Call the `process()` method on your instantiated object to get the final answer to the main_question provided.
+1. Create file Keys.py
+2. Add key values of the form
+```python
+GOOGLE_API_KEY = "[GOOGLE_API_KEY]"
+GOOGLE_CSE_KEY = "[GOOGLE_CSE_KEY]"
+OPEN_AI_KEY = "[OPEN_AI_KEY]"
+```
+3. Run GPT-Run.py 
 
-### Example
+### Example Usage
 
 ```python
 from GPT_API import Solver, Delegator, Combinator
 import delegator_parser
 
-# Create an instance of SemiRecursivePipeline
-pipeline = SemiRecursivePipeline(main_question="What is the capital of France?")
+def main():
+  # Create an instance of SemiRecursivePipeline
+  pipeline = SemiRecursivePipeline(main_question="What is the capital of France?")
 
-# Get the answer to the question using the process method
-answer = pipeline.process()
+  # Get the answer to the question using the process method
+  answer = pipeline.process()
 
-print(answer)
+  print(answer)
+
+if __name__ == '__main__':
+  main()
+
 ```
 
 ## Dependencies
 
-- GPT_API (custom module)
-- delegator_parser (custom module)
-- OpenAI API (external)
+- OpenAI API 
+- GoogleAPIClient
+- BeautifulSoup
+- Requests
+- Logging
+- Tiktoken
+- Multiprocessing
