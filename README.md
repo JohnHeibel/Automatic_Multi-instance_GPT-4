@@ -3,7 +3,7 @@
 ## Overview
 
 Automatic Multi-Instance GPT is designed to provide an interface for utilizing multiple GPT-based AI models for iteratively answering a given question. It calls a main GPT instance that creates a list of related questions. This is then processed by another GPT instance to convert it to JSON. This file is parsed to delegate a variable number of child instances. Each child instance can be assigned a tool to use. Currently, only internal knowledge and search are implemented. Search is a simple implementation that gets the top 3 search results and uses GPT to summarize the page. These summaries are passed to the child instance. After each child has processed, the results are passed into a single final summarizer GPT instance that tries to answer the main question.
-Usage
+
 
 ## Usage
 
