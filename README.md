@@ -1,4 +1,4 @@
-# README: Automatic Multi-Instance GPT (AMIG)
+# Automatic Multi-Instance GPT (AMIG)
 
 ## Overview
 
